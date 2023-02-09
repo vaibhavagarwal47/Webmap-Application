@@ -1,0 +1,9 @@
+html,body
+{
+    overflow: hidden;
+}
+
+#map
+{ 
+    height: 700px; 
+}
