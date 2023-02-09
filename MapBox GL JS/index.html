@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Create a rotating globe</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+  <script src="https://unpkg.com/three@0.126.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+  <script src="libs/require.js"></script>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #map {
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      flex-grow: 1;
+      height: 100%;
+    }
+
+    #container {
+      display: flex;
+      height: 100%;
+    }
+
+    #sidebar {
+      flex-shrink: 0;
+      width: 300px;
+      height: 100%;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="sidebar">
+      <button id="flytohon">Fly to Honeywell</button>
+      <button id="flytohyd">Fly to Hyderabad</button>
+      <br><br>
+      <button id="fit">Fit to India</button>
+      <br><br>
+      <!-- <button id="startflight">Start Flight</button> -->
+    </div>
+
+    <div id="map"></div>
+  </div>
+  <script src="./main.js" type="module"></script>
+</body>
+
+</html>
