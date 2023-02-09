@@ -349,6 +349,99 @@ map.on("click", (e) => {
   console.log(bbox);
 });
 
+
+
+document.getElementById("fit").addEventListener("click", () => {
+  map.fitBounds([
+    [75.183107, 37.314615], // north corner of the bounds
+    [77.438966, 7.891529], // south corner of the bounds
+  ]);
+});
+
+document.getElementById("flytohon").addEventListener("click", () => {
+  // Fly to a random location
+  map.flyTo({
+    center: [78.344144, 17.418741],
+    essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+    zoom: 18,
+    pitch: 70,
+  });
+});
+document.getElementById("flytohyd").addEventListener("click", () => {
+  // Fly to a random location
+  map.flyTo({
+    center: [78.491684, 17.38714],
+    essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+    zoom: 11,
+    pitch: 50,
+  });
+});
+
+// ADD the 3D buildings
+map.on("style.load", () => {
+  // Insert the layer beneath any symbol layer.
+  const layers = map.getStyle().layers;
+  const labelLayerId = layers.find(
+    (layer) => layer.type === "symbol" && layer.layout["text-field"]
+  ).id;
+  map.addLayer(
+    {
+      id: "add-3d-buildings",
+      source: "composite",
+      "source-layer": "building",
+      filter: ["==", "extrude", "true"],
+      type: "fill-extrusion",
+      minzoom: 15,
+      paint: {
+        "fill-extrusion-color": "#aaa",
+        "fill-extrusion-height": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          15,
+          0,
+          15.05,
+          ["get", "height"],
+        ],
+        "fill-extrusion-base": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          15,
+          0,
+          15.05,
+          ["get", "min_height"],
+        ],
+        "fill-extrusion-opacity": 0.6,
+      },
+    },
+    labelLayerId
+  );
+});
+
+map.on("style.load", () => {
+  map.addSource("contours", {
+    type: "vector",
+    url: "mapbox://mapbox.mapbox-terrain-v2",
+  });
+  map.addLayer({
+    id: "contours",
+    type: "line",
+    source: "contours",
+    "source-layer": "contour",
+    layout: {
+      // Make the layer visible by default.
+      visibility: "visible",
+      "line-join": "round",
+      "line-cap": "round",
+    },
+    paint: {
+      "line-color": "black",
+      "line-width": 1,
+    },
+  });
+});
+
 // // At low zooms, complete a revolution every two minutes.
 // const secondsPerRevolution = 200;
 // // Above zoom level 9, do not rotate.
@@ -408,101 +501,12 @@ map.on("click", (e) => {
 // });
 // spinGlobe();
 
-document.getElementById("fit").addEventListener("click", () => {
-  map.fitBounds([
-    [75.183107, 37.314615], // north corner of the bounds
-    [77.438966, 7.891529], // south corner of the bounds
-  ]);
-});
 
-document.getElementById("flytohon").addEventListener("click", () => {
-  // Fly to a random location
-  map.flyTo({
-    center: [78.344144, 17.418741],
-    essential: true, // this animation is considered essential with respect to prefers-reduced-motion
-    zoom: 18,
-    pitch: 70,
-  });
-});
-document.getElementById("flytohyd").addEventListener("click", () => {
-  // Fly to a random location
-  map.flyTo({
-    center: [78.491684, 17.38714],
-    essential: true, // this animation is considered essential with respect to prefers-reduced-motion
-    zoom: 11,
-    pitch: 50,
-  });
-});
 
-// ADD the 3D buildings
-map.on("style.load", () => {
-  // Insert the layer beneath any symbol layer.
-  const layers = map.getStyle().layers;
-  const labelLayerId = layers.find(
-    (layer) => layer.type === "symbol" && layer.layout["text-field"]
-  ).id;
-  map.addLayer(
-    {
-      id: "add-3d-buildings",
-      source: "composite",
-      "source-layer": "building",
-      filter: ["==", "extrude", "true"],
-      type: "fill-extrusion",
-      minzoom: 15,
-      paint: {
-        "fill-extrusion-color": "#aaa",
-        // Use an 'interpolate' expression to
-        // add a smooth transition effect to
-        // the buildings as the user zooms in.
-        "fill-extrusion-height": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          15,
-          0,
-          15.05,
-          ["get", "height"],
-        ],
-        "fill-extrusion-base": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          15,
-          0,
-          15.05,
-          ["get", "min_height"],
-        ],
-        "fill-extrusion-opacity": 0.6,
-      },
-    },
-    labelLayerId
-  );
-});
 
-map.on("style.load", () => {
-  map.addSource("contours", {
-    type: "vector",
-    url: "mapbox://mapbox.mapbox-terrain-v2",
-  });
-  map.addLayer({
-    id: "contours",
-    type: "line",
-    source: "contours",
-    "source-layer": "contour",
-    layout: {
-      // Make the layer visible by default.
-      visibility: "visible",
-      "line-join": "round",
-      "line-cap": "round",
-    },
-    paint: {
-      "line-color": "black",
-      "line-width": 1,
-    },
-  });
-});
 
-// // add a 3d plane model at the airport
+
+// // add a 3d plane model at the delhi airport
 // var modelOrigin = [77.088425, 28.570616];
 // const modelAltitude = 500;
 // const modelRotate = [Math.PI / 2, 0, 0];
@@ -602,6 +606,11 @@ map.on("style.load", () => {
 // map.on("style.load", () => {
 //   map.addLayer(customLayer, "waterway-label");
 // });
+
+
+
+
+
 
 // // flight delhi to bhopal airport
 
